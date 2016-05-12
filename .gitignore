@@ -27,6 +27,17 @@
 *.i*86
 *.x86_64
 *.hex
+*.bin
 
 # Debug files
 *.dSYM/
+
+#文件压缩包
+*.zip
+
+#运行截图
+*.png
+
+
+Orange's/
+ORANGE’S：一个操作系统的实现.pdf
