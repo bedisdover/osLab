@@ -117,8 +117,7 @@ PUBLIC void keyboard_read(TTY* p_tty)
 			if (is_pausebreak) {
 				key = PAUSEBREAK;
 			}
-		}
-		else if (scan_code == 0xE0) {
+		} else if (scan_code == 0xE0) {
 			scan_code = get_byte_from_kbuf();
 
 			/* PrintScreen 被按下 */
@@ -241,8 +240,7 @@ PUBLIC void keyboard_read(TTY* p_tty)
 						else if (num_lock &&
 							 (key == PAD_DOT)) {
 							key = '.';
-						}
-						else{
+						} else{
 							switch(key) {
 							case PAD_HOME:
 								key = HOME;

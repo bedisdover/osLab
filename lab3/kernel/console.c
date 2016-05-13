@@ -27,8 +27,9 @@ extern void enable_int();
 
 PUBLIC void set_cursor(unsigned int position);
 
+PUBLIC void flush(CONSOLE* p_con);
+
 PRIVATE void set_video_start_addr(u32 addr);
-PRIVATE void flush(CONSOLE* p_con);
 
 /*======================================================================*
 			   init_screen
@@ -138,10 +139,13 @@ PUBLIC void move_cursor(CONSOLE *p_con, int destination) {
 	flush(p_con);
 }
 
+
+
+
 /*======================================================================*
                            flush
 *======================================================================*/
-PRIVATE void flush(CONSOLE* p_con) {
+PUBLIC void flush(CONSOLE* p_con) {
 	set_cursor(p_con->cursor);
 	set_video_start_addr(p_con->current_start_addr);
 }

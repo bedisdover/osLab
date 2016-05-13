@@ -33,12 +33,16 @@ disp_str:
 
 	mov	esi, [ebp + 8]	; pszInfo
 	mov	edi, [disp_pos]
-	mov	ah, 0Fh
+	mov	ah, 07h         ; 0000：黑底， 0111：白字
 .1:
-	lodsb
-	test	al, al
+	lodsb               ; 把si指向的存储单元读入al
+	test	al, al      ; 若al为0
 	jz	.2
-	cmp	al, 0Ah	; 是回车吗?
+	cmp al, 09h         ; 制表符，转换为空格输出
+	jnz .4
+    mov al, 20h
+.4:
+	cmp	al, 0Ah	        ; 是回车吗?
 	jnz	.3
 	push	eax
 	mov	eax, edi
@@ -76,6 +80,10 @@ disp_color_str:
 	lodsb
 	test	al, al
 	jz	.2
+	cmp al, 09h         ; 制表符，转换为空格输出
+    jnz .4
+    mov al, 20h
+.4:
 	cmp	al, 0Ah	; 是回车吗?
 	jnz	.3
 	push	eax

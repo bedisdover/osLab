@@ -35,8 +35,28 @@
       <file leaf-file-name="tty.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/kernel/tty.c">
           <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="467">
+              <caret line="257" column="31" selection-start-line="257" selection-start-column="31" selection-end-line="257" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="kliba.asm" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/kliba.asm">
+          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="226">
-              <caret line="200" column="28" selection-start-line="200" selection-start-column="25" selection-end-line="200" selection-end-column="28" />
+              <caret line="10" column="16" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="keyboard.c" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/kernel/keyboard.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="292">
+              <caret line="109" column="34" selection-start-line="109" selection-start-column="34" selection-end-line="109" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -45,8 +65,8 @@
       <file leaf-file-name="console.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/kernel/console.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2550">
-              <caret line="102" column="9" selection-start-line="102" selection-start-column="9" selection-end-line="102" selection-end-column="9" />
+            <state relative-caret-position="305">
+              <caret line="127" column="18" selection-start-line="127" selection-start-column="18" selection-end-line="127" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -55,8 +75,8 @@
       <file leaf-file-name="main.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/kernel/main.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2500">
-              <caret line="100" column="27" selection-start-line="100" selection-start-column="27" selection-end-line="100" selection-end-column="27" />
+            <state relative-caret-position="492">
+              <caret line="99" column="28" selection-start-line="99" selection-start-column="28" selection-end-line="99" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -72,7 +92,6 @@
       <list>
         <option value="$PROJECT_DIR$/boot/loader.asm" />
         <option value="$PROJECT_DIR$/boot/boot.asm" />
-        <option value="$PROJECT_DIR$/lib/kliba.asm" />
         <option value="$PROJECT_DIR$/include/protect.h" />
         <option value="$PROJECT_DIR$/include/proto.h" />
         <option value="$PROJECT_DIR$/include/string.h" />
@@ -87,11 +106,12 @@
         <option value="$PROJECT_DIR$/include/keyboard.h" />
         <option value="$PROJECT_DIR$/include/tty.h" />
         <option value="$PROJECT_DIR$/Makefile" />
-        <option value="$PROJECT_DIR$/kernel/keyboard.c" />
         <option value="$PROJECT_DIR$/include/global.h" />
         <option value="$PROJECT_DIR$/include/keymap.h" />
         <option value="$PROJECT_DIR$/kernel/console.c" />
         <option value="$PROJECT_DIR$/kernel/main.c" />
+        <option value="$PROJECT_DIR$/kernel/keyboard.c" />
+        <option value="$PROJECT_DIR$/lib/kliba.asm" />
         <option value="$PROJECT_DIR$/kernel/tty.c" />
       </list>
     </option>
@@ -133,22 +153,15 @@
     </navigator>
     <panes>
       <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lab3" />
-              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
+        <subPane />
       </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="SearchEverywhereHistoryKey" value="keym&#9;FILE&#9;file:///home/song/program/os/lab3/include/keymap.h&#10;tty.h&#9;FILE&#9;file:///home/song/program/os/lab3/include/tty.h&#10;ter&#9;ACTION&#9;ActivateTerminalToolWindow&#10;start&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/start.c&#10;clo&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/clock.c&#10;string&#9;FILE&#9;file:///home/song/program/os/lab3/lib/string.asm&#10;disp_str&#9;null&#9;null&#10;key&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/keyboard.c&#10;star&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/start.c&#10;kernel&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/kernel.asm&#10;protec&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/protect.c&#10;clock&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/clock.c&#10;tty&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/tty.c&#10;KEY&#9;FILE&#9;file:///home/song/program/os/lab3/include/keyboard.h&#10;keybo&#9;FILE&#9;file:///home/song/program/os/lab3/include/keyboard.h&#10;gl&#9;FILE&#9;file:///home/song/program/os/lab3/include/global.h&#10;glo&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/global.c&#10;pro.h&#9;FILE&#9;file:///home/song/program/os/lab3/include/proc.h&#10;str&#9;FILE&#9;file:///home/song/program/os/lab3/lib/string.asm&#10;kli&#9;FILE&#9;file:///home/song/program/os/lab3/lib/kliba.asm&#10;main&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/main.c&#10;boo&#9;FILE&#9;file:///home/song/program/os/lab3/boot/boot.asm&#10;Mak&#9;FILE&#9;file:///home/song/program/os/lab3/Makefile&#10;tty.c&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/tty.c&#10;k&#9;FILE&#9;file:///home/song/program/os/lab3/include/keyboard.h" />
+    <property name="SearchEverywhereHistoryKey" value="keyboard.c&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/keyboard.c&#10;keym&#9;FILE&#9;file:///home/song/program/os/lab3/include/keymap.h&#10;tty.h&#9;FILE&#9;file:///home/song/program/os/lab3/include/tty.h&#10;ter&#9;ACTION&#9;ActivateTerminalToolWindow&#10;start&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/start.c&#10;clo&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/clock.c&#10;string&#9;FILE&#9;file:///home/song/program/os/lab3/lib/string.asm&#10;disp_str&#9;null&#9;null&#10;key&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/keyboard.c&#10;star&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/start.c&#10;kernel&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/kernel.asm&#10;protec&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/protect.c&#10;clock&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/clock.c&#10;tty&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/tty.c&#10;KEY&#9;FILE&#9;file:///home/song/program/os/lab3/include/keyboard.h&#10;keybo&#9;FILE&#9;file:///home/song/program/os/lab3/include/keyboard.h&#10;gl&#9;FILE&#9;file:///home/song/program/os/lab3/include/global.h&#10;glo&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/global.c&#10;pro.h&#9;FILE&#9;file:///home/song/program/os/lab3/include/proc.h&#10;str&#9;FILE&#9;file:///home/song/program/os/lab3/lib/string.asm&#10;kli&#9;FILE&#9;file:///home/song/program/os/lab3/lib/kliba.asm&#10;main&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/main.c&#10;boo&#9;FILE&#9;file:///home/song/program/os/lab3/boot/boot.asm&#10;Mak&#9;FILE&#9;file:///home/song/program/os/lab3/Makefile&#10;tty.c&#9;FILE&#9;file:///home/song/program/os/lab3/kernel/tty.c&#10;k&#9;FILE&#9;file:///home/song/program/os/lab3/include/keyboard.h" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -356,12 +369,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="24" width="1366" height="744" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25409836" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25409836" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24441132" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -373,7 +387,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294893" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -389,6 +402,11 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/.." />
+    </ignored-roots>
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <option name="time" value="1" />
@@ -396,13 +414,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/kernel/clock.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="17" column="10" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/kernel/keyboard.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2450">
@@ -629,14 +640,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/proto.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="40" column="12" selection-start-line="40" selection-start-column="12" selection-end-line="40" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/proc.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="567">
@@ -662,21 +665,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
           <caret line="18" column="32" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/kliba.asm">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="207" column="29" selection-start-line="207" selection-start-column="11" selection-end-line="207" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kernel/keyboard.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="72" column="25" selection-start-line="72" selection-start-column="25" selection-end-line="72" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -717,24 +705,53 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/kernel/main.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2500">
-          <caret line="100" column="27" selection-start-line="100" selection-start-column="27" selection-end-line="100" selection-end-column="27" />
+        <state relative-caret-position="492">
+          <caret line="99" column="28" selection-start-line="99" selection-start-column="28" selection-end-line="99" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/kernel/console.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2550">
-          <caret line="102" column="9" selection-start-line="102" selection-start-column="9" selection-end-line="102" selection-end-column="9" />
+        <state relative-caret-position="305">
+          <caret line="127" column="18" selection-start-line="127" selection-start-column="18" selection-end-line="127" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/kernel/keyboard.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="109" column="34" selection-start-line="109" selection-start-column="34" selection-end-line="109" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/proto.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="455">
+          <caret line="44" column="22" selection-start-line="44" selection-start-column="22" selection-end-line="44" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/kliba.asm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="10" column="16" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/kernel/tty.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="200" column="28" selection-start-line="200" selection-start-column="25" selection-end-line="200" selection-end-column="28" />
+        <state relative-caret-position="467">
+          <caret line="257" column="31" selection-start-line="257" selection-start-column="31" selection-end-line="257" selection-end-column="31" />
           <folding />
         </state>
       </provider>

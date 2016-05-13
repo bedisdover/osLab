@@ -19,7 +19,7 @@
 #include "../include/console.h"
 
 #define TTY_FIRST    (tty_table)
-#define TTY_END        (tty_table + NR_CONSOLES)
+#define TTY_END      (tty_table + NR_CONSOLES)
 
 extern void enable_irq(int irq);
 
@@ -32,6 +32,8 @@ extern void select_console(int nr_console);
 extern void init_screen(TTY *p_tty);
 
 extern int is_current_console(CONSOLE *p_con);
+
+extern void flush(CONSOLE* p_con);
 
 extern void keyboard_read(TTY *p_tty);
 
@@ -46,7 +48,7 @@ PRIVATE char tty_do_write(TTY *p_tty);
 
 PRIVATE void put_key(TTY *p_tty, u32 key);
 
-PRIVATE void change_mode(TTY *p_tty, u32 key);
+PRIVATE void change_mode();
 
 PRIVATE void handle_printable(TTY *p_tty, u32 key);
 
@@ -62,9 +64,7 @@ PRIVATE void handle_simple(TTY *p_tty, u32 key);
 
 PRIVATE void handle_search(TTY *p_tty, u32 key);
 
-PRIVATE void escape_search(TTY *p_tty, u32 key);
-
-PRIVATE void handle_backspace(TTY *p_tty);
+PRIVATE void escape_search();
 
 PRIVATE void init_input();
 
@@ -72,24 +72,37 @@ PRIVATE void add_char(char c);
 
 PUBLIC void clear_all();
 
+void move_cursor_up();
+
+void move_cursor_down();
+
+PRIVATE void move_cursor_left();
+
+PRIVATE void move_cursor_right();
+
+PRIVATE void move_cursor_start();
+
+PRIVATE void move_cursor_end();
+
+PRIVATE void move_cursor_line_start();
+
+PRIVATE void move_cursor_line_end();
+
 /*======================================================================*
   存储所有输入的内容，最后一个字符所在行和列
  *======================================================================*/
 char input[50][80];
 int row, column;
 
-int search_mode;
-//查找模式
+int search_mode;//查找模式
 int search_done;//查找模式中按下回车，显示查找结果
 
-char search_content[512];
-//查找内容
+int insert_mode;//插入模式
+
+char search_content[512];//查找内容
 int content_length;//查找内容长度
 
-int interval;//清屏间隔
-
 TTY *p_tty;
-
 
 /*======================================================================*
                            task_tty
@@ -155,7 +168,7 @@ PUBLIC void in_process(TTY *p_tty, u32 key) {
 
     int temp = key & MASK_RAW;
     if (temp == ESC) {
-        change_mode(p_tty, key);
+        change_mode();
         return;
     }
 
@@ -174,9 +187,9 @@ PUBLIC void in_process(TTY *p_tty, u32 key) {
  *  1.判断当前是否处于search模式
  *      若是，转入escape_search跳出search模式
  *  2.修改search模式，屏蔽/开启时钟中断*/
-PRIVATE void change_mode(TTY *p_tty, u32 key) {
+PRIVATE void change_mode() {
     if (search_mode) {
-        escape_search(p_tty, key);
+        escape_search();
         search_mode = 0;
         enable_irq(CLOCK_IRQ);
     } else {
@@ -190,7 +203,7 @@ PRIVATE void change_mode(TTY *p_tty, u32 key) {
  *  2.清空search_content
  *  3.重置search_done为0
  *  4.重新打印已有内容*/
-PRIVATE void escape_search(TTY *p_tty, u32 key) {
+PRIVATE void escape_search() {
     for (; content_length > 0;) {
         put_key(p_tty, '\b');
         search_content[--content_length] = 0;
@@ -198,7 +211,8 @@ PRIVATE void escape_search(TTY *p_tty, u32 key) {
     search_done = 0;
 
     disp_pos = 0;
-    for (int j = 0; j <= row; ++j) {
+    int temp = p_tty->p_console->cursor;
+    for (int j = 0; j <= temp / 80; ++j) {
         disp_color_str(input[j], 0x07);
     }
 }
@@ -220,11 +234,17 @@ PRIVATE int str_equ(char *str_1, char *str_2, int length) {
 
 
 /*操作流程
- * 1.循环判断每一行是否包含要查找的内容
+ * 1.判断查询内容是否为空
+ *      若是，结束操作
+ * 2.循环判断每一行是否包含要查找的内容
  *   对每一个字符进行判断
  *      若不是，输出此字符
  *      若是，输出查找内容，同时移动指针*/
 PRIVATE void search_process(TTY *p_tty) {
+    if (!content_length) {
+        return;
+    }
+
     static char temp[] = {' ', '\0'};//用于输出单个字符
 
     disp_pos = 0;
@@ -235,7 +255,7 @@ PRIVATE void search_process(TTY *p_tty) {
             }
             if (!str_equ(&input[i][j], search_content, content_length)) {
                 temp[0] = input[i][j];
-                disp_color_str(temp, 0x07);//白色
+                disp_str(temp);
             } else {
                 disp_color_str(search_content, 0x02);//绿色
                 j = j + content_length - 1;
@@ -312,40 +332,6 @@ PRIVATE void handle_printable(TTY *p_tty, u32 key) {
     add_char(ch);
 }
 
-/*获得当前光标所在位置前的字符*/
-PRIVATE char getData() {
-    return input[p_tty->p_console->cursor / 80][p_tty->p_console->cursor % 80];
-}
-
-/*光标左移*/
-PRIVATE void move_cursor_left() {
-    do {
-        move_cursor(p_tty->p_console, LEFT);
-    } while (getData() == 0);
-    if (getData() == '\t') {
-        for (int i = 0; i < 3; ++i) {
-            move_cursor(p_tty->p_console, LEFT);
-        }
-    }
-}
-
-
-/*光标右移*/
-PRIVATE void move_cursor_right() {
-    do {
-        if (p_tty->p_console->cursor < row * 80 + column) {
-            move_cursor(p_tty->p_console, RIGHT);
-        } else {
-            break;
-        }
-    } while (getData() == 0);
-    if (getData() == '\t') {
-        for (int i = 0; i < 3; ++i) {
-            move_cursor(p_tty->p_console, RIGHT);
-        }
-    }
-}
-
 /*======================================================================*
 				handle_unprintable（不可打印字符处理）
  *======================================================================*/
@@ -361,18 +347,45 @@ PRIVATE void handle_unprintable(TTY *p_tty, u32 key) {
         case TAB:
             handle_tab(p_tty);
             break;
+        case INSERT:
+            disp_str("test");
+            break;
+        case HOME:
+            if ((key & FLAG_CTRL_L) || (key & FLAG_CTRL_R)) {
+                move_cursor_start();
+            } else {
+                move_cursor_line_start();
+            }
+            break;
+        case END:
+            if ((key & FLAG_CTRL_L) || (key & FLAG_CTRL_R)) {
+                move_cursor_end();
+            } else {
+                move_cursor_line_end();
+            }
+            break;
+        case PAGEUP:
+            for (int i = 0; i < 25; ++i) {
+                scroll_screen(p_tty->p_console, SCR_UP);
+            }
+            break;
+        case PAGEDOWN:
+            for (int j = 0; j < 25; ++j) {
+                scroll_screen(p_tty->p_console, SCR_DN);
+            }
+            break;
         case UP:
             if ((key & FLAG_SHIFT_L) || (key & FLAG_SHIFT_R)) {
                 scroll_screen(p_tty->p_console, SCR_DN);
             } else {
-                move_cursor(p_tty->p_console, UP);
+                move_cursor_up();
             }
             break;
         case DOWN:
             if ((key & FLAG_SHIFT_L) || (key & FLAG_SHIFT_R)) {
                 scroll_screen(p_tty->p_console, SCR_UP);
             } else {
-                move_cursor(p_tty->p_console, DOWN);
+                move_cursor_down();
             }
             break;
         case LEFT:
@@ -400,6 +413,136 @@ PRIVATE void handle_unprintable(TTY *p_tty, u32 key) {
             break;
         default:
             break;
+    }
+}
+
+/*获得当前光标所在位置前的字符*/
+PRIVATE char getData() {
+    return input[p_tty->p_console->cursor / 80][p_tty->p_console->cursor % 80];
+}
+
+/*获取指定位置的字符*/
+PRIVATE char getData_by_location(int location) {
+    return input[location / 80][location % 80];
+}
+
+/*光标上移
+ *  1.移动光标到上一行行尾
+ *  2.判断目标位置是否存在字符
+ *      若是，循环左移，直到目标位置
+ *      否则，结束操作*/
+void move_cursor_up() {
+    int target = p_tty->p_console->cursor - 80;
+    move_cursor_line_start();
+    move_cursor_left();
+
+    if (getData_by_location(target)) {
+        for (int i = 0; i < p_tty->p_console->cursor - target; ++i) {
+            move_cursor_left();
+        }
+    }
+}
+
+/*光标下移
+ *  1.移动光标至下一行行首
+ *  2.判断目标位置是否存在字符
+ *      若是，循环右移至目标位置
+ *      否则，结束操作*/
+void move_cursor_down() {
+    int target = p_tty->p_console->cursor + 80;
+    move_cursor_line_end();
+    move_cursor_right();
+
+    if (getData_by_location(target)) {
+        for (int i = 0; i < target - p_tty->p_console->cursor; ++i) {
+            move_cursor_right();
+        }
+    }
+}
+
+/*光标左移*/
+PRIVATE void move_cursor_left() {
+    do {
+        move_cursor(p_tty->p_console, LEFT);
+    } while (getData() == 0);
+    if (getData() == '\t') {
+        for (int i = 0; i < 3; ++i) {
+            move_cursor(p_tty->p_console, LEFT);
+        }
+    }
+}
+
+/*光标右移
+ *  1.判断光标所在位置是否为回车
+ *      若是，移动到下一行行首
+ *  2.判断是否存在字符
+ *      若是，向右移动光标一次
+ *      否则，结束操作
+ *  3.判断是否是制表符
+ *      若是，向右移动光标3次*/
+PRIVATE void move_cursor_right() {
+    int temp = p_tty->p_console->cursor;
+    if (getData() == '\n') {
+        for (int i = temp; i < (temp / 80 + 1) * 80; ++i) {
+            move_cursor(p_tty->p_console, RIGHT);
+        }
+        return;
+    }
+    if (getData()) {
+        move_cursor(p_tty->p_console, RIGHT);
+    }
+    if (getData() == '\t') {
+        for (int i = 0; i < 3; ++i) {
+            move_cursor(p_tty->p_console, RIGHT);
+        }
+    }
+}
+
+
+/*光标移动到行首
+ * */
+PRIVATE void move_cursor_line_start() {
+    while (p_tty->p_console->cursor % 80 != 0) {
+        move_cursor_left();
+    }
+}
+
+
+/*光标移动到输入内容最开始的位置*/
+PRIVATE void move_cursor_start() {
+    while (p_tty->p_console->cursor) {
+        move_cursor_line_start();
+        move_cursor_left();
+    }
+}
+
+/*光标移动到行尾
+ *  处理流程：
+ *      1.判断是否到达屏幕最右端
+ *          若是，结束操作
+ *      2.循环判断是否存在字符是不是回车
+ *          若是，右移一位
+ *          否则，结束操作*/
+PRIVATE void move_cursor_line_end() {
+    while (getData() && getData() != '\n') {
+        if ((p_tty->p_console->cursor + 1) % 80 == 0) {//屏幕最右端
+            break;
+        }
+        move_cursor_right();
+    }
+}
+
+/*光标移动到输入内容最后位置
+ *  处理流程：
+ *      1.判断是否为回车
+ *          若是，移动光标至下一行
+ *      2.判断是否存在字符（是否为0）
+ *          若存在，递归移动到最后位置
+ *          否则，结束递归*/
+PRIVATE void move_cursor_end() {
+    while (getData()) {
+        move_cursor_line_end();
+        move_cursor_right();
     }
 }
 
