@@ -28,6 +28,8 @@ extern void disable_int();
 
 extern void clear_all();
 
+extern void disp_insert(int color);
+
 /*======================================================================*
                             kernel_main
  *======================================================================*/
@@ -95,7 +97,7 @@ PUBLIC int kernel_main() {
 /*======================================================================*
                                TestA
  *======================================================================*/
-void TestA() {
+void TestA() {//定时清屏
     while (1) {
         milli_delay(200000);
         clear_all();
@@ -105,11 +107,13 @@ void TestA() {
 /*======================================================================*
                                TestB
  *======================================================================*/
-void TestB() {
+void TestB() {//显示插入光标
     int i = 0x1000;
     while (1) {
-        /* disp_str("B."); */
-        milli_delay(10);
+//        disp_insert(0x70);
+//        milli_delay(5000);
+//        disp_insert(0x07);
+//        milli_delay(2000);
     }
 }
 
@@ -119,7 +123,7 @@ void TestB() {
 void TestC() {
     int i = 0x2000;
     while (1) {
-        /* disp_str("C."); */
-        milli_delay(10);
+//        disp_str("C.");
+//        milli_delay(10);
     }
 }

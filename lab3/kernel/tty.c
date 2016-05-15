@@ -39,6 +39,10 @@ extern void keyboard_read(TTY *p_tty);
 
 extern void move_cursor(CONSOLE *p_con, int destination);
 
+PUBLIC void disp_insert();
+
+PUBLIC void disp_insert_white();
+
 PRIVATE void init_tty(TTY *p_tty);
 
 PRIVATE void tty_do_read(TTY *p_tty);
@@ -71,6 +75,8 @@ PRIVATE void init_input();
 PRIVATE void add_char(char c);
 
 PUBLIC void clear_all();
+
+PRIVATE char getData();
 
 void move_cursor_up();
 
@@ -145,6 +151,7 @@ PRIVATE void init_input() {
 
     search_done = 0;
     search_mode = 0;
+    insert_mode = 0;
     for (int k = 0; k < sizeof(search_content); ++k) {
         search_content[k] = 0;
     }
@@ -311,6 +318,29 @@ PRIVATE void handle_search(TTY *p_tty, u32 key) {
     }
 }
 
+/*处理插入*/
+PRIVATE void handle_insert() {
+    while (insert_mode) {
+        disp_insert(0x70);
+        milli_delay(5000);
+        disp_insert(0x07);
+        milli_delay(2000);
+    }
+}
+
+/*打印黑底字符*/
+PUBLIC void disp_insert(int color) {
+    char ch = getData();
+    if (ch == 0) {
+        ch = ' ';
+    }
+    static char temp[] = {' ', '\0'};
+    temp[0] = ch;
+    disp_pos = p_tty->p_console->cursor * 2;
+    disp_color_str(temp, color);
+}
+
+
 /*======================================================================*
 				handle_simple（普通处理）
  *======================================================================*/
@@ -348,7 +378,8 @@ PRIVATE void handle_unprintable(TTY *p_tty, u32 key) {
             handle_tab(p_tty);
             break;
         case INSERT:
-            disp_str("test");
+            insert_mode ^= 1;
+            handle_insert();
             break;
         case HOME:
             if ((key & FLAG_CTRL_L) || (key & FLAG_CTRL_R)) {
@@ -436,26 +467,29 @@ void move_cursor_up() {
     move_cursor_line_start();
     move_cursor_left();
 
-    if (getData_by_location(target)) {
-        for (int i = 0; i < p_tty->p_console->cursor - target; ++i) {
+    if (target > 0 && getData_by_location(target)) {
+        int temp = p_tty->p_console->cursor - target;
+        for (int i = 0; i < temp; ++i) {
             move_cursor_left();
         }
     }
 }
 
 /*光标下移
- *  1.移动光标至下一行行首
+ *  1.移动光标至下一行行尾
  *  2.判断目标位置是否存在字符
- *      若是，循环右移至目标位置
+ *      若是，循环左移至目标位置
  *      否则，结束操作*/
 void move_cursor_down() {
     int target = p_tty->p_console->cursor + 80;
     move_cursor_line_end();
     move_cursor_right();
+    move_cursor_line_end();
 
     if (getData_by_location(target)) {
-        for (int i = 0; i < target - p_tty->p_console->cursor; ++i) {
-            move_cursor_right();
+        int temp =p_tty->p_console->cursor - target;
+        for (int i = 0; i < temp; ++i) {
+            move_cursor_left();
         }
     }
 }
