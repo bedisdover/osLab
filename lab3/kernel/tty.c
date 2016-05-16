@@ -628,13 +628,49 @@ PRIVATE char back() {
     return temp;
 }
 
+/*打印空格*/
+PRIVATE void handle_space(int num) {
+    for (int i = 0; i < num; ++i) {
+        put_key(p_tty, ' ');
+        add_char('\t');
+    }
+}
+
+//RPIVATE int align() {
+//    int lastLine = p_tty->p_console->cursor - 80;
+//    for (int i = 0; i < 4; ++i) {
+//        if (lastLine > 0 && )
+//    }
+//}
+
 /*======================================================================*
 				handle_tab（TAB处理）
  *======================================================================*/
 PRIVATE void handle_tab(TTY *p_tty) {
-    for (int i = 0; i < 4; ++i) {
-        put_key(p_tty, ' ');
-        add_char('\t');
+    int lastLine = p_tty->p_console->cursor - 80;
+    int align = 0;//记录是否需要纵向对齐
+
+    if (lastLine >= 0) {
+        for (int j = 3; j > 0; --j) {
+            if (getData_by_location(lastLine - j) == '\t' && getData_by_location(lastLine + 4 - j) != '\t') {
+                handle_space(4 - j);
+                align = 1;
+                break;
+            }
+        }
+        if (!align) {
+            for (int i = 0; i < 4; ++i) {
+                if (getData_by_location(lastLine + i) == '\t') {
+                    handle_space(4 + i);
+                    align = 1;
+                    return;
+                }
+            }
+        }
+    }
+
+    if (!align) {
+        handle_space(4);
     }
 }
 
