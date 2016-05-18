@@ -33,7 +33,7 @@ extern void init_screen(TTY *p_tty);
 
 extern int is_current_console(CONSOLE *p_con);
 
-extern void flush(CONSOLE* p_con);
+extern void flush(CONSOLE *p_con);
 
 extern void keyboard_read(TTY *p_tty);
 
@@ -100,12 +100,14 @@ PRIVATE void move_cursor_line_end();
 char input[50][80];
 int row, column;
 
-int search_mode;//查找模式
+int search_mode;
+//查找模式
 int search_done;//查找模式中按下回车，显示查找结果
 
 int insert_mode;//插入模式
 
-char search_content[512];//查找内容
+char search_content[512];
+//查找内容
 int content_length;//查找内容长度
 
 TTY *p_tty;
@@ -487,7 +489,7 @@ void move_cursor_down() {
     move_cursor_line_end();
 
     if (getData_by_location(target)) {
-        int temp =p_tty->p_console->cursor - target;
+        int temp = p_tty->p_console->cursor - target;
         for (int i = 0; i < temp; ++i) {
             move_cursor_left();
         }
@@ -636,13 +638,6 @@ PRIVATE void handle_space(int num) {
     }
 }
 
-//RPIVATE int align() {
-//    int lastLine = p_tty->p_console->cursor - 80;
-//    for (int i = 0; i < 4; ++i) {
-//        if (lastLine > 0 && )
-//    }
-//}
-
 /*======================================================================*
 				handle_tab（TAB处理）
  *======================================================================*/
@@ -690,12 +685,35 @@ PRIVATE void handle_enter(TTY *p_tty) {
     }
 }
 
+/*判断光标前是否是一个完整的tab*/
+PRIVATE int is_tab() {
+    for (int i = 0; i <= 4; ++i) {
+        if (column - i < 0 || input[row][column - i] != '\t') {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
 /*删除tab
  * handle_backspace中已退格一次，此处只退三次*/
 PRIVATE void back_tab(TTY *p_tty) {
-    for (int i = 0; i < 3; ++i) {
-        put_key(p_tty, '\b');
-        back();
+    for (int i = 0; i < 3; ++i) {//处理四个空格的tab
+        if (column >= 0 && input[row][column - 1] == '\t') {
+            put_key(p_tty, '\b');
+            back();
+        }
+    }
+
+    if (!is_tab()) {
+        for (int i = 0; i < 4; ++i) {
+            if (column != 0 && input[row][column - 1] == '\t') {
+                handle_backspace(p_tty);
+            } else {
+                break;
+            }
+        }
     }
 }
 
