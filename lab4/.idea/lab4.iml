@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="CPP_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/kernel/i8259.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/kernel/main.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/kernel/kernel.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/kernel/start.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/kernel/proc.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/kernel/protect.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/kernel/syscall.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/kernel/clock.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/kernel/global.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Makefile" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/bochsrc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/readme.md" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/proc.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/string.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/type.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/global.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/const.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/proto.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/sconst.inc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/include/protect.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/a.img" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/操作系统实验四.pdf" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/string.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/klib.c" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/kliba.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/boot/include/load.inc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/boot/include/pm.incnc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/boot/include/pm.inc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/boot/include/fat12hdr.inc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/boot/boot.bin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/boot/loader.bin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/boot/loader.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/boot/boot.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/实验4_TTY任务框架.pptx" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lab4.odt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/kernel.bin" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="Header Search Paths">
+        <CLASSES>
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/5/include" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/5/include-fixed" />
+          <root url="file:///usr/include" />
+          <root url="file:///usr/local/include" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/5/include" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/5/include-fixed" />
+          <root url="file:///usr/include" />
+          <root url="file:///usr/local/include" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>
