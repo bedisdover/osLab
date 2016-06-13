@@ -54,6 +54,7 @@ PUBLIC  void    sys_disp_str(char *);
 PUBLIC  void    sys_disp_color_str(char *, int);
 PUBLIC  void    sys_process_sleep(int);
 
+
 /* syscall.asm */
 PUBLIC  void    sys_call();             /* int_handler */
 PUBLIC  int     get_ticks();

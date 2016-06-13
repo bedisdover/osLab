@@ -21,17 +21,21 @@ extern void schedule();
 PUBLIC void clock_handler(int irq)
 {
 	ticks++;
-	p_proc_ready->ticks--;
+	if (p_proc_ready->sleep == 0) {
+		p_proc_ready->ticks--;
+	}
 
 	for (int i = 0; i < NR_TASKS; i++) {
-		if (proc_table[i].sleep != 0) {
+		if (proc_table[i].sleep > 0) {
 			proc_table[i].sleep--;
 		}
 	}
 
-	if (k_reenter != 0) {
-		return;
-	}
+//	disp_str("clock");
+//	if (k_reenter != 0) {
+//		return;
+//	}
+//	disp_str("test");
 
 	if (p_proc_ready->ticks > 0) {
 		return;
@@ -58,5 +62,14 @@ PUBLIC void milli_delay_1(int milli_sec)
 {
 	process_sleep(milli_sec);
 
-	while (p_proc_ready->sleep) {}
+	schedule();
+//	while (p_proc_ready->sleep) {}
+}
+
+/*======================================================================*
+                              weakup
+ *======================================================================*/
+PUBLIC void wakeup(PROCESS* p)
+{
+	process_wakeup(p);
 }

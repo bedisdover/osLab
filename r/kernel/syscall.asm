@@ -13,6 +13,7 @@ _NR_disp_color_str_1    equ 2 ;
 _NR_process_sleep       equ 3 ;
 _NR_sem_p               equ 4 ;
 _NR_sem_v               equ 5 ;
+_NR_process_wakeup      equ 6 ;
 
 INT_VECTOR_SYS_CALL equ 0x90
 
@@ -26,6 +27,7 @@ global  disp_color_str_1
 global  process_sleep
 global  sem_p
 global  sem_v
+global  process_wakeup
 
 bits 32
 [section .text]
@@ -64,6 +66,16 @@ disp_color_str_1:
 ; ========================================================================
 process_sleep:
     mov 	eax, _NR_process_sleep
+   	mov 	ebx, [esp + 4]
+   	int 	INT_VECTOR_SYS_CALL
+   	ret
+
+
+; ========================================================================
+;                             process_wakeup
+; ========================================================================
+process_wakeup:
+    mov 	eax, _NR_process_wakeup
    	mov 	ebx, [esp + 4]
    	int 	INT_VECTOR_SYS_CALL
    	ret

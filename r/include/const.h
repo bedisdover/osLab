@@ -62,9 +62,10 @@
 #define	AT_WINI_IRQ 	14	/* at winchester */
 
 /* system call */
-#define NR_SYS_CALL     6
+#define NR_SYS_CALL     7
 
 /*为顾客准备的椅子数*/
 #define CHAIRS          3
+#define QUEUE_LENGTH    10
 
 #endif /* _ORANGES_CONST_H_ */

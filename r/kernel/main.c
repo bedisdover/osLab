@@ -17,6 +17,7 @@ extern void enable_irq(int irq);
 extern char* strcpy(char* p_dst, char* p_src);
 extern void milli_delay(int milli_sec);
 extern void milli_delay_1(int milli_sec);
+extern void disp_color_int(int input, int color);
 
 /*======================================================================*
                             kernel_main
@@ -33,7 +34,7 @@ PUBLIC int kernel_main()
 	for (i = 0; i < NR_TASKS; i++) {
 		strcpy(p_proc->p_name, p_task->name);	// name of the process
 		p_proc->pid = i;			// pid
-
+		p_proc->sleep = 0;
 		p_proc->ldt_sel = selector_ldt;
 
 		memcpy(&p_proc->ldts[0], &gdt[SELECTOR_KERNEL_CS >> 3],
@@ -85,9 +86,20 @@ PUBLIC int kernel_main()
 
 	p_proc_ready	= proc_table;
 
+	waiting			= 0;
+	number			= 0;
+
 	customers.value = 0;
 	customers.head  = 0;
 	customers.tail  = 0;
+
+	barbers.value 	= 0;
+	barbers.head  	= 0;
+	barbers.tail  	= 0;
+
+	mutex.value 	= 1;
+	mutex.head  	= 0;
+	mutex.tail  	= 0;
 
 	//	semaphore.list[0] = p_proc_ready;
 
@@ -104,6 +116,36 @@ PUBLIC int kernel_main()
 	while(1){}
 }
 
+void come(int number)
+{
+	disp_color_str_1("customer ", 0x05);
+	disp_color_int(number, 0x05);
+	disp_color_str_1(" come\n", 0x05);
+	milli_delay(1000);
+}
+
+void getHaircut(int number)
+{
+	disp_color_str_1("customer ", 0x06);
+	disp_color_int(number, 0x06);
+	disp_color_str_1(" get haircut\n", 0x06);
+	milli_delay(2000);
+}
+
+void leave(int number)
+{
+	disp_color_str_1("customer ", 0x06);
+	disp_color_int(number, 0x06);
+	disp_color_str_1(" leave\n", 0x06);
+	milli_delay(1000);
+}
+
+void full()
+{
+	disp_color_str_1("full, customer leave\n", 0x09);
+	milli_delay(1000);
+}
+
 /*======================================================================*
                                TestA
  *======================================================================*/
@@ -111,34 +153,57 @@ void TestA()
 {
 	int i = 0;
 	while (1) {
-//		disp_color_str_1("A.", 0x03);
 		milli_delay(10);
 	}
 }
 
 /*======================================================================*
-                               TestB
+                               TestB（理发师进程）
  *======================================================================*/
 void TestB()
 {
 	int i = 0x1000;
 	while(1){
-//		disp_color_str_1("B.", 0x04);
-		sem_p(&customers);
-		milli_delay_1(1000);
-		sem_v(&customers);
+//		milli_delay(1000);
+		sem_p(&customers);				/*判断是否有顾客，若无顾客，理发师睡眠*/
+//		milli_delay(1000);
+		sem_p(&mutex);					/*若有顾客，进入临界区*/
+		waiting--;						/*等待顾客数减1*/
+		sem_v(&barbers);				/*理发师准备为顾客理发*/
+		milli_delay(2000);				/*理发师正在理发（非临界区）*/
+		disp_color_str_1("barber cut hair\n", 0x04);
+		sem_v(&mutex);					/*退出临界区*/
 	}
 }
 
 /*======================================================================*
-                               TestC
+                               TestC（顾客进程）
  *======================================================================*/
 void TestC()
 {
-	int i = 0x2000;
-	while(1){
-		disp_color_str_1("C.", 0x05);
-		milli_delay_1(1000);
+	while(1) {
+//		sem_v(&barbers);
+//		sem_v(&customers);
+		sem_p(&mutex);					/*进入临界区*/
+		if (waiting < CHAIRS) {			/*判断是否有空椅子*/
+			waiting++;					/*等待顾客加1*/
+			number++;					/*顾客编号加1*/
+			come(number);
+			sem_v(&customers);			/*唤醒理发师*/
+			sem_v(&mutex);				/*退出临界区*/
+//			disp_str("1");
+			sem_p(&barbers);			/*理发师忙，顾客坐着等待*/
+//			disp_str("2");
+			sem_p(&mutex);
+			getHaircut(number);
+			leave(number);
+			sem_v(&mutex);
+		} else {
+			sem_v(&mutex);				/*人满了，顾客离开*/
+			sem_p(&mutex);
+			full();
+			sem_v(&mutex);
+		}
 	}
 }
 
@@ -147,10 +212,29 @@ void TestC()
  *======================================================================*/
 void TestD()
 {
-	int i = 0x3000;
-	while (1) {
-		disp_color_str_1("D.", 0x06);
-		milli_delay_1(1000);
+	while(1) {
+//		sem_v(&barbers);
+//		sem_v(&customers);
+		sem_p(&mutex);					/*进入临界区*/
+		if (waiting < CHAIRS) {			/*判断是否有空椅子*/
+			waiting++;					/*等待顾客加1*/
+			number++;					/*顾客编号加1*/
+			come(number);
+			sem_v(&customers);			/*唤醒理发师*/
+			sem_v(&mutex);				/*退出临界区*/
+//			disp_str("1");
+			sem_p(&barbers);			/*理发师忙，顾客坐着等待*/
+//			disp_str("2");
+			sem_p(&mutex);
+			getHaircut(number);
+			leave(number);
+			sem_v(&mutex);
+		} else {
+			sem_v(&mutex);				/*人满了，顾客离开*/
+			sem_p(&mutex);
+			full();
+			sem_v(&mutex);
+		}
 	}
 }
 
@@ -159,9 +243,28 @@ void TestD()
  *======================================================================*/
 void TestE()
 {
-	int i = 0x4000;
 	while(1) {
-		disp_color_str_1("E.", 0x08);
-		milli_delay_1(1000);
+//		sem_v(&barbers);
+//		sem_v(&customers);
+		sem_p(&mutex);					/*进入临界区*/
+		if (waiting < CHAIRS) {			/*判断是否有空椅子*/
+			waiting++;					/*等待顾客加1*/
+			number++;					/*顾客编号加1*/
+			come(number);
+			sem_v(&customers);			/*唤醒理发师*/
+			sem_v(&mutex);				/*退出临界区*/
+//			disp_str("1");
+			sem_p(&barbers);			/*理发师忙，顾客坐着等待*/
+//			disp_str("2");
+			sem_p(&mutex);
+			getHaircut(number);
+			leave(number);
+			sem_v(&mutex);
+		} else {
+			sem_v(&mutex);				/*人满了，顾客离开*/
+			sem_p(&mutex);
+			full();
+			sem_v(&mutex);
+		}
 	}
 }

@@ -12,6 +12,8 @@
 #endif
 
 EXTERN	int		    ticks;
+EXTERN  int         waiting;        //等候理发的顾客人数
+EXTERN  int         number;         //顾客编号
 EXTERN  SEMAPHORE   customers;
 EXTERN  SEMAPHORE   barbers;
 EXTERN  SEMAPHORE   mutex;

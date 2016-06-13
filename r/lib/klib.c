@@ -61,6 +61,17 @@ PUBLIC void disp_int(int input)
 }
 
 /*======================================================================*
+ 							disp_color_int
+ *======================================================================*/
+PUBLIC void disp_color_int(int input, int color)
+{
+	static char output[16];
+	itoa(output, input);
+	disp_color_str_1(output, color);
+}
+
+
+/*======================================================================*
                                delay
  *======================================================================*/
 PUBLIC void delay(int time)

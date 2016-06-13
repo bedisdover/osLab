@@ -34,5 +34,6 @@ PUBLIC	system_call		sys_call_table[NR_SYS_CALL] = {sys_get_ticks,
 								sys_disp_color_str,
 								sys_process_sleep,
 								sys_sem_p,
-								sys_sem_v};
+								sys_sem_v,
+								sys_process_wakeup};
 

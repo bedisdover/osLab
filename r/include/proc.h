@@ -51,7 +51,7 @@ typedef struct s_task {
 /*信号量*/
 typedef struct semaphore {
 	int value;
-	PROCESS* list[3];
+	PROCESS* list[QUEUE_LENGTH];
 	int head, tail;
 } SEMAPHORE;
 
@@ -61,6 +61,8 @@ PUBLIC  void    sys_sem_v(SEMAPHORE*);
 PUBLIC  void    sem_p(SEMAPHORE*);
 PUBLIC  void    sem_v(SEMAPHORE*);
 
+PUBLIC  void    sys_process_wakeup(PROCESS*);
+PUBLIC  void    process_wakeup(PROCESS*);
 
 /* Number of tasks */
 #define NR_TASKS	5
