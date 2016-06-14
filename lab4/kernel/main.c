@@ -1,3 +1,4 @@
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             main.c
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -12,43 +13,19 @@
 #include "proc.h"
 #include "global.h"
 
-/*======================================================================*
-                           新增队列
- *======================================================================*/
-
-#define MAX_QUEUE_SIZE 10
-typedef struct queue  
-{    
-    int front;  
-    int rear;  
-    int queue_array[MAX_QUEUE_SIZE] ;  
-      
-}SqQueue;  
-SqQueue S;
-
-SqQueue Init_Queue()            /*  队列初始化  */  
-{      
-    SqQueue S;  
-    S.front=S.rear=0;    
-    return (S);  
-}  
-int push(SqQueue *S,int e)      /*  使数据元素e进队列成为新的队尾  */  
-{    
-    (*S).queue_array[(*S).rear]=e;    /* e成为新的队尾  */  
-    (*S).rear++ ;                     /*  队尾指针加1  */  
-}  
-int pop(SqQueue *S,int *e )     /*弹出队首元素*/  
-{    
-    *e=(*S).queue_array[(*S).front] ;    
-    (*S).front++;    
-}  
-
+extern void enable_irq(int irq);
+extern char* strcpy(char* p_dst, char* p_src);
+extern void milli_delay(int milli_sec);
+extern void milli_delay_1(int milli_sec);
+extern void disp_color_int(int input, int color);
 
 /*======================================================================*
                             kernel_main
  *======================================================================*/
 PUBLIC int kernel_main()
 {
+	disp_str("-----\"kernel_main\" begins-----\n");
+
 	TASK*		p_task		= task_table;
 	PROCESS*	p_proc		= proc_table;
 	char*		p_task_stack	= task_stack + STACK_SIZE_TOTAL;
@@ -57,7 +34,7 @@ PUBLIC int kernel_main()
 	for (i = 0; i < NR_TASKS; i++) {
 		strcpy(p_proc->p_name, p_task->name);	// name of the process
 		p_proc->pid = i;			// pid
-
+		p_proc->sleep = 0;
 		p_proc->ldt_sel = selector_ldt;
 
 		memcpy(&p_proc->ldts[0], &gdt[SELECTOR_KERNEL_CS >> 3],
@@ -87,63 +64,106 @@ PUBLIC int kernel_main()
 		p_proc++;
 		p_task++;
 		selector_ldt += 1 << 3;
-		proc_table[i].ticks = proc_table[i].isWait = 0;
+
+		proc_table[i].sleep = 0;
 	}
 
+	// 清空屏幕
+	disp_pos = 0;
+	for (i = 0; i < 80 * 25; i++) {
+		disp_str(" ");
+	}
+	disp_pos = 0;
+
+	proc_table[0].ticks = proc_table[0].priority =  30;
+	proc_table[1].ticks = proc_table[1].priority =  30;
+	proc_table[2].ticks = proc_table[2].priority =  30;
+	proc_table[3].ticks = proc_table[3].priority =  30;
+	proc_table[4].ticks = proc_table[4].priority =  30;
 
 	k_reenter = 0;
 	ticks = 0;
 
-	mutex = 1;
-	full = 0;
-	empty = BUFFER_NUMBER;
-
 	p_proc_ready	= proc_table;
 
-        /* 初始化 8253 PIT */
-        out_byte(TIMER_MODE, RATE_GENERATOR);
-        out_byte(TIMER0, (u8) (TIMER_FREQ/HZ) );
-        out_byte(TIMER0, (u8) ((TIMER_FREQ/HZ) >> 8));
+	waiting			= 0;
+	number			= 0;
 
-        put_irq_handler(CLOCK_IRQ, clock_handler); /* 设定时钟中断处理程序 */
-        enable_irq(CLOCK_IRQ);                     /* 让8259A可以接收时钟中断 */
+	customers.value = 0;
+	customers.head  = 0;
+	customers.tail  = 0;
 
-	disp_pos=0;
-	for(i=0;i<80*25;i++){
-		disp_str(" ");
-	}
-	disp_pos=0;
+	barbers.value 	= 0;
+	barbers.head  	= 0;
+	barbers.tail  	= 0;
 
-	S=Init_Queue();
+	mutex.value 	= 1;
+	mutex.head  	= 0;
+	mutex.tail  	= 0;
+
+	//	semaphore.list[0] = p_proc_ready;
+
+	/* 初始化 8253 PIT */
+	out_byte(TIMER_MODE, RATE_GENERATOR);
+	out_byte(TIMER0, (u8) (TIMER_FREQ/HZ) );
+	out_byte(TIMER0, (u8) ((TIMER_FREQ/HZ) >> 8));
+
+	put_irq_handler(CLOCK_IRQ, clock_handler); /* 设定时钟中断处理程序 */
+	enable_irq(CLOCK_IRQ);                     /* 让8259A可以接收时钟中断 */
 
 	restart();
 
 	while(1){}
 }
 
-/*=============
-	P
-===============*/
-void P(int ID, int p)
+void come(int number)
 {
-	int i = sem_p(ID);
-	if(i < 0) {
-		p_proc_ready->isWait = 1;
-		push(&S,p);
-		while(p_proc_ready->isWait){}
-	}
+	disp_color_int(number, 0x05);
+	disp_color_str_1(" come and wait\n", 0x05);
+	milli_delay(1000);
 }
 
-/*=============
-	V
-==============*/
-void V(int ID, int p)
+void getHaircut(int number)
 {
-	int i = sem_v(ID);
-	if(i <= 0) {
-		int t=0;
-		pop(&S,&t);
-		proc_table[t].isWait = 0;
+	disp_color_int(number, 0x06);
+	disp_color_str_1(" get haircut\n", 0x06);
+	milli_delay(2000);
+}
+
+void leave(int number)
+{
+	disp_color_int(number, 0x06);
+	disp_color_str_1(" leave\n", 0x06);
+	milli_delay(1000);
+}
+
+void full()
+{
+	milli_delay(1000);
+	disp_color_str_1("full, leave\n", 0x09);
+}
+
+void customer()
+{
+	int temp;
+	while(1) {
+		sem_p(&mutex);					/*进入临界区*/
+		if (waiting < CHAIRS) {			/*判断是否有空椅子*/
+			waiting++;					/*等待顾客加1*/
+			number++;					/*顾客编号加1*/
+			temp = number;
+			come(temp);
+			sem_v(&customers);			/*唤醒理发师*/
+			sem_v(&mutex);				/*退出临界区*/
+			sem_p(&barbers);			/*理发师忙，顾客坐着等待*/
+			sem_p(&mutex);
+			getHaircut(temp);
+			leave(temp);
+			sem_v(&mutex);
+		} else {
+			sem_v(&mutex);				/*人满了，顾客离开*/
+			full();
+		}
 	}
 }
 
@@ -159,35 +179,29 @@ void TestA()
 }
 
 /*======================================================================*
-                               TestB
+                               TestB（理发师进程）
  *======================================================================*/
 void TestB()
 {
 	int i = 0x1000;
 	while(1){
-		P(EMPTY,1);
-		my_disp_str("Producer");
-		my_disp_str("\n");
-		my_milli_delay(1000);
-		V(FULL,1);
+		sem_p(&customers);				/*判断是否有顾客，若无顾客，理发师睡眠*/
+		sem_p(&mutex);					/*若有顾客，进入临界区*/
+		waiting--;						/*等待顾客数减1*/
+		sem_v(&barbers);				/*理发师准备为顾客理发*/
+		milli_delay(2000);				/*理发师正在理发（非临界区）*/
+		disp_color_str_1("cut hair\n", 0x04);
+
+		sem_v(&mutex);					/*退出临界区*/
 	}
 }
 
 /*======================================================================*
-                               TestC
+                               TestC（顾客进程）
  *======================================================================*/
 void TestC()
 {
-	int i = 0x2000;
-	while(1){
-		P(FULL,2);
-		P(MUTEX,2);
-		my_disp_str("Consumer A");
-		my_disp_str("\n");
-		my_milli_delay(1000);
-		V(MUTEX,2);
-		V(EMPTY,2);
-	}
+	customer();
 }
 
 /*======================================================================*
@@ -195,14 +209,13 @@ void TestC()
  *======================================================================*/
 void TestD()
 {
-	int i = 0x3000;
-	while(1){
-		P(FULL,3);
-		P(MUTEX,3);
-		my_disp_str("Consumer B");
-		my_disp_str("\n");
-		my_milli_delay(1000);
-		V(MUTEX,3);
-		V(EMPTY,3);
-	}
+	customer();
+}
+
+/*======================================================================*
+                               TestE
+ *======================================================================*/
+void TestE()
+{
+	customer();
 }

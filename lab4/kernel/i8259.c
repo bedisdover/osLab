@@ -13,6 +13,8 @@
 #include "proc.h"
 #include "global.h"
 
+extern void disp_int(int input);
+extern void disable_irq(int irq);
 
 /*======================================================================*
                             init_8259A

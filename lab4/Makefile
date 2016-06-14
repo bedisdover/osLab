@@ -17,7 +17,7 @@ CC		= gcc -m32
 LD		= ld -m elf_i386
 ASMBFLAGS	= -I boot/include/
 ASMKFLAGS	= -I include/ -f elf
-CFLAGS		= -I include/ -c -fno-builtin -fno-stack-protector
+CFLAGS		= -I include/ -c -fno-builtin
 LDFLAGS		= -s -Ttext $(ENTRYPOINT)
 DASMFLAGS	= -u -o $(ENTRYPOINT) -e $(ENTRYOFFSET)
 
@@ -26,7 +26,7 @@ ORANGESBOOT	= boot/boot.bin boot/loader.bin
 ORANGESKERNEL	= kernel.bin
 OBJS		= kernel/kernel.o kernel/syscall.o kernel/start.o kernel/main.o kernel/clock.o\
 			kernel/i8259.o kernel/global.o kernel/protect.o kernel/proc.o\
-			lib/kliba.o lib/klib.o lib/string.o
+			lib/kliba.o lib/klib.o lib/string.o 
 DASMOUTPUT	= kernel.bin.asm
 
 # All Phony Targets
