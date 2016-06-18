@@ -14,6 +14,7 @@
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Makefile" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/bochsrc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/操作系统实验四.pdf" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/proc.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/string.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/type.h" isTestSource="false" />
@@ -23,14 +24,19 @@
       <sourceFolder url="file://$MODULE_DIR$/include/sconst.inc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/include/protect.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/a.img" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/kernel.bin" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/string.asm" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/klib.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/lib/kliba.asm" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/boot/include/pm.inc" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/boot/include/fat12hdr.inc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/boot/include/load.inc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/boot/include/fat12hdr.inc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/boot/include/pm.inc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/boot/boot.bin" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/boot/boot.asm" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/boot/loader.asm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/boot/loader.bin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/实验4_TTY任务框架.pptx" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lab4.pdf" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">

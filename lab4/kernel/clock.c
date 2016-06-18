@@ -70,6 +70,4 @@ PUBLIC void milli_delay_1(int milli_sec)
 PUBLIC void wakeup(PROCESS* p)
 {
 	process_wakeup(p);
-
-//	p_proc_ready = p;
 }

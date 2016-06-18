@@ -25,13 +25,6 @@ PUBLIC void schedule()
 	PROCESS* p;
 	int	 greatest_ticks = 0;
 
-//	disp_str(p_proc_ready->p_name);
-//	disp_int(p_proc_ready->ticks);
-//	disp_int(proc_table[1].ticks);
-//	disp_color_int(proc_table[1].sleep, 0x06);
-//	disp_color_int(proc_table[2].ticks, 0x09);
-//	disp_color_int(proc_table[2].sleep, 0x08);
-
 	while (!greatest_ticks) {
 		for (p = proc_table; p < proc_table + NR_TASKS; p++) {
 			if (p->ticks > greatest_ticks && p->sleep >= 0) {
@@ -101,8 +94,7 @@ PUBLIC void sys_sem_p(SEMAPHORE* s)
 		s->head = (s->head + 1) % QUEUE_LENGTH;
 		milli_delay_1(-10);
 	}
-//	openIRQ();                     /* 让8259A可以接收时钟中断 */
-//	disp_str("p3");
+//	openIRQ();
 }
 
 
@@ -117,7 +109,6 @@ PUBLIC void sys_sem_v(SEMAPHORE* s)
 		PROCESS* p = s->list[s->tail];
 		s->tail = (s->tail + 1) % QUEUE_LENGTH;
 		wakeup(p);
-//		disp_str(p->p_name);
 	}
-//	openIRQ();                     /* 让8259A可以接收时钟中断 */
+//	openIRQ();
 }
